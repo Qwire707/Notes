@@ -51,16 +51,10 @@ window = QWidget()#створення вiкна
 window.setWindowTitle("Розумнi замiтки")#створення заголовка
 window.resize(900, 600)#розміри выкна
 
-
 #створення віджетiв 
 field_text = QTextEdit()
 
 lbl_list_notes = QLabel("Список замiток")
-
-    
-
-    
-
 
 list_notes = QListWidget()
 
@@ -108,22 +102,22 @@ main_line.addLayout(col2)
 
 window.setLayout(main_line)
 
-#функцiя для показу замiтки
 def show_note():
+    '''функцiя для показу замiтки'''
     name = list_notes.selectedItems()[0].text()#отримуємо назву замітки
     field_text.setText(notes[name]['текст'])#відображаемо текст замітки
     list_tags.clear()#чистимо список тегів
     list_tags.addItems(notes[name]['теги'])#відображаємо теги
 
-#зробити замітку
 def create_note():
+    '''зробити замітку'''
     note_name, ok = QInputDialog.getText(window, "Додати замітку", "Назва замітки")
     if ok and note_name != '':
         notes[note_name] = {'текст': '', 'теги': []}
         list_notes.addItem(note_name)
 
-#видалити замітку
 def del_note():
+    '''видалити замітку'''
     if list_notes.selectedItems():
         name = list_notes.selectedItems()[0].text()
         del notes[name]
@@ -136,8 +130,8 @@ def del_note():
     else:
         print('Замiтка не вибрана')        
 
-#зберігання заміток
 def save_note():
+    '''зберігання заміток'''
     if list_notes.selectedItems():
         name = list_notes.selectedItems()[0].text()
         notes[name]['текст'] = field_text.toPlainText()
@@ -146,8 +140,8 @@ def save_note():
     else:
         print('Замiтка не вибрана')
 
-#підключення кнопок
 def add_tag():
+    '''підключення кнопок'''
     if list_notes.selectedItems():
         name = list_notes.selectedItems()[0].text()
         tag = input_tag.text()
@@ -160,8 +154,8 @@ def add_tag():
     else:
         print('Замiтка не вибрана')
 
-#видалення тега
 def del_tag():
+    '''видалення тега'''
     if list_tags.selectedItems():
         name = list_notes.selectedItems()[0].text()
         tag = list_tags.selectedItems()[0].text()
@@ -172,9 +166,9 @@ def del_tag():
                 json.dump(notes, file)
     else:
         print('тег не вибрано')
-        
-#пошук замітки по тегу
+
 def search_note():
+    '''пошук замітки по тегу'''
     tag = input_tag.text()
     if tag and btn_search_note.text() == "Шукати замiтки по тегу":
         notes_filtred = {}
@@ -192,9 +186,6 @@ def search_note():
         list_notes.addItems(notes)
         btn_search_note.setText("Шукати замiтки по тегу")
 
-
-
-
 #пiдключення кнопок
 list_notes.itemClicked.connect(show_note)
 btn_create_note.clicked.connect(create_note)
@@ -208,9 +199,5 @@ with open('notes_data.json', 'r') as file:
     notes = json.load(file)
 list_notes.addItems(notes)
 
-
-         
-
-#пошук тега за заміткою 
 window.show()  #показуэмо вiкно
 app.exec_()
