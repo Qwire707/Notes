@@ -141,7 +141,7 @@ def save_note():
         print('Замiтка не вибрана')
 
 def add_tag():
-    '''підключення кнопок'''
+    '''додавання тега'''
     if list_notes.selectedItems():
         name = list_notes.selectedItems()[0].text()
         tag = input_tag.text()
